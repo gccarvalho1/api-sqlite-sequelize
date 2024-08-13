@@ -8,7 +8,7 @@ class Controller {
       const listaDeRegistro = await this.entidadeService.getAllRegistros();
       return res.status(200).json(listaDeRegistro);
     } catch (erro) {
-      //erro}
+      return res.status(500).json({ erro: erro.message });
     }
   }
   async getByID(req, res) {
@@ -19,7 +19,7 @@ class Controller {
       );
       return res.status(200).json(filtroPorID);
     } catch (erro) {
-      //erro
+      return res.status(500).json({ erro: erro.message });
     }
   }
   async createNew(req, res) {
@@ -30,7 +30,7 @@ class Controller {
       );
       return res.status(200).json(novoRegistro);
     } catch (erro) {
-      //erro
+      return res.status(500).json({ erro: erro.message });
     }
   }
   async updateRegister(req, res) {
@@ -48,7 +48,7 @@ class Controller {
       }
       return res.status(200).send('Registro atualizado com sucesso!');
     } catch (erro) {
-      //erro
+      return res.status(500).json({ erro: erro.message });
     }
   }
   async delete(req, res) {
