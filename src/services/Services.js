@@ -8,6 +8,9 @@ class Services {
   async getAllRegistros() {
     return dataSource[this.model].findAll();
   }
+  async getAllRegisterByScope(escopo) {
+    return dataSource[this.model].scope(escopo).findAll();
+  }
   async getARegisterByID(id) {
     return dataSource[this.model].findByPk(id);
   }

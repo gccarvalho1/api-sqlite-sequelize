@@ -1,4 +1,6 @@
 'use strict';
+const CpfValidation = require('../../utils/cpfHelperValidation.js');
+
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Pessoa extends Model {
@@ -21,8 +23,23 @@ module.exports = (sequelize, DataTypes) => {
   Pessoa.init(
     {
       nome: DataTypes.STRING,
-      email: DataTypes.STRING,
-      cpf: DataTypes.STRING,
+      email: {
+        type: DataTypes.STRING,
+        validate: {
+          isEmail: {
+            args: true,
+            msg: 'O email cadastrado é inválido',
+          },
+        },
+      },
+      cpf: {
+        type: DataTypes.STRING,
+        validate: {
+          isValid: (cpf) => {
+            if (!CpfValidation(cpf)) throw new Error('Número de Cpf Inválido!');
+          },
+        },
+      },
       ativo: DataTypes.BOOLEAN,
       role: DataTypes.STRING,
     },
@@ -30,7 +47,17 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: 'Pessoa',
       tableName: 'pessoas',
-      paranoid: true
+      paranoid: true,
+      defaultScope: {
+        where: {
+          ativo: true,
+        },
+      },
+      scopes: {
+        todosOsRegistros: {
+          where: {},
+        },
+      },
     }
   );
   return Pessoa;
