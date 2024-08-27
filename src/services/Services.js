@@ -5,8 +5,8 @@ class Services {
     this.model = nomeDoModel;
   }
 
-  async getAllRegistros() {
-    return dataSource[this.model].findAll();
+  async getAllRegistros(where = {}) {
+    return dataSource[this.model].findAll({ where: { ...where } });
   }
   async getAllRegisterByScope(escopo) {
     return dataSource[this.model].scope(escopo).findAll();
@@ -32,6 +32,11 @@ class Services {
   }
   async deleteRegister(id) {
     return dataSource[this.model].destroy({ where: { id: id } });
+  }
+  async pegaRegistrosEConta(options) {
+    return dataSource[this.model].findAndCountAll({
+      ...options,
+    });
   }
 }
 
