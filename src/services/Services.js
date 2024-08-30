@@ -17,11 +17,12 @@ class Services {
   async createARegister(dadosParaCriar) {
     return dataSource[this.model].create(dadosParaCriar);
   }
-  async updateARegister(dadosAtualizados, id) {
-    const listadeRegistrosAtualizados = dataSource[this.model].update(
+  async updateARegister(dadosAtualizados, where, transacao = {}) {
+    const listadeRegistrosAtualizados = await dataSource[this.model].update(
       dadosAtualizados,
       {
-        where: { id: id },
+        where: { ...where },
+        transaction: transacao,
       }
     );
     console.log(listadeRegistrosAtualizados);
